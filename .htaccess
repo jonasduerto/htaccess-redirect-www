@@ -1,0 +1,45 @@
+Options -Indexes
+
+ErrorDocument 403 /UC/
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+# ============================================================================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+</IfModule>
+# ============================================================================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+# ============================================================================
+# www.test.com > test.com
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.(.+)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+</IfModule>
+# ============================================================================
+
+# test.com > www.test.com
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(?!www)(.+)$ [NC]
+RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
+</IfModule>
+# ============================================================================
